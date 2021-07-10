@@ -37,19 +37,33 @@ void setup() {
 
   count = millis();
   lastTime = millis();
+
+  
 }
 
 void loop() {
  
-  if (millis() - lastTime > 64){
-    lastTime = millis();
+  //if (millis() - lastTime > 100){
+    //lastTime = millis();
     //count = millis();
-    if (fstrip.update()) {
-      fstrip.draw();
+    //fstrip.update();
+    //if (fstrip.update()) {
+      //fstrip.draw();
       //delay(15);
       //Serial.println(millis() - count);
-    }
+    //}
+  
     
+  //}
+  EVERY_N_MILLIS(32){
+    fstrip.update();
+    fstrip.draw();
+    if (SREG & (1 << SREG_I)) {
+      Serial.println("interrupt on");
+    } else {
+      Serial.println("interrupt off");
+    }
+    Serial.println("ok");
   }
   //delay(32);
 }
