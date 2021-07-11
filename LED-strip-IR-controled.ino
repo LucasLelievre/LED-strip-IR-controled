@@ -14,10 +14,8 @@ FastLedStrip fstrip(NUM_LEDS);
 
 #define IR_INPUT_PIN    2
 #include "TinyIRReceiver.cpp.h"
-uint8_t command = 0;
 
-unsigned long count;
-unsigned long lastTime;
+bool isDrawing = true;
 
 void setup() {
   Serial.begin(115200);
@@ -34,38 +32,14 @@ void setup() {
   FastLED.addLeds<WS2812, PIN_LEDS, GRB>(fstrip.getLedStrip(), NUM_LEDS).setCorrection(TypicalLEDStrip);
   fstrip.clear();
   fstrip.draw();
-
-  count = millis();
-  lastTime = millis();
-
-  
 }
 
 void loop() {
- 
-  //if (millis() - lastTime > 100){
-    //lastTime = millis();
-    //count = millis();
-    //fstrip.update();
-    //if (fstrip.update()) {
-      //fstrip.draw();
-      //delay(15);
-      //Serial.println(millis() - count);
-    //}
-  
-    
-  //}
   EVERY_N_MILLIS(32){
-    fstrip.update();
-    fstrip.draw();
-    if (SREG & (1 << SREG_I)) {
-      Serial.println("interrupt on");
-    } else {
-      Serial.println("interrupt off");
+    if (fstrip.update() && isDrawing) {
+      fstrip.draw();
     }
-    Serial.println("ok");
   }
-  //delay(32);
 }
 
 /*
@@ -77,6 +51,7 @@ ICACHE_RAM_ATTR
 IRAM_ATTR
 #endif
 void handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat) {
+  Serial.println();
   // Print only very short output, since we are in an interrupt context
   // and do not want to miss the next interrupts of the repeats coming soon
 #ifdef DEBUG
@@ -88,6 +63,10 @@ void handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat
   Serial.print(isRepeat);
   Serial.println();
 #endif
-  //strip.setCommand(aCommand, isRepeat);
   fstrip.setCommand(aCommand, isRepeat);
+  isDrawing = true;
+}
+
+void stopDrawing() {
+  isDrawing = false;
 }
