@@ -178,8 +178,15 @@ bool FastLedStrip::update() {
       return this->setLum(true);
       break;
     case 0x19: // random
-      return this->setColour(static_cast<CRGB::HTMLColorCode>(rand() % 149));
-      //return this->setColour(random(0, 256), random(0, 256), random(0, 256));
+      /*CRGB random = static_cast<CRGB::HTMLColorCode>(rand() % 149);
+      Serial.println(random);
+      Serial.println(random, HEX);
+      Serial.println();
+      return this->setColour(random);*/
+      CRGB c;
+      c.setRGB(random(0, 256), random(0, 256), random(0, 256));
+      //c.maximizeBrightness();
+      return this->setColour(c);
       break;
     case 0xD: // u/sd warm/cold white
       return this->setWhite();

@@ -51,7 +51,6 @@ ICACHE_RAM_ATTR
 IRAM_ATTR
 #endif
 void handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat) {
-  Serial.println();
   // Print only very short output, since we are in an interrupt context
   // and do not want to miss the next interrupts of the repeats coming soon
 #ifdef DEBUG
