@@ -15,7 +15,7 @@ void FastLedStrip::init() {
   this->rainbowHue = 0;
   //this->animHSV.setHSV(255, 255, 255);
 
-  this->speed = 3;
+  this->speed = 3.0;
   this->lum = 255;
   FastLED.setBrightness(this->lum);
 }
@@ -50,7 +50,10 @@ bool FastLedStrip::power() {
 }
 
 bool FastLedStrip::setSpeed(bool isUp) {
-  this->speed = constrain(this->speed - (isUp ? 1 : -1), 1, 20);
+  if (this->speed < 1.0)
+    this->speed = constrain(this->speed - (isUp ? 0.1 : -0.1), 0.1, 20.0);
+  else
+    this->speed = constrain(this->speed - (isUp ? 1 : -1), 0.1, 20.0);
   this->setPrevCommand();
   Serial.print("Speed : ");
   Serial.println(this->speed);
@@ -103,7 +106,8 @@ bool FastLedStrip::setRainbow() {
     this->isRepeat = true;
   }
   this->rainbowHue = this->rainbowHue - this->speed;
-  uint8_t tmp = this->rainbowHue;
+  if (this->rainbowHue < 0) rainbowHue = 255.0;
+  uint8_t tmp = (uint8_t)this->rainbowHue;
   for (int i = 0; i < this->num_led; i++) {
     this->ledStrip[i].setHue(tmp);
     tmp += 10*this->rainbowMove;

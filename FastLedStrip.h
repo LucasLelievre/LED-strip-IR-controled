@@ -11,10 +11,10 @@ class FastLedStrip {
 
     bool isOn;
     bool isColdWhite;
-    uint8_t speed;
+    float speed;
     uint8_t lum;
     bool rainbowMove;
-    uint8_t rainbowHue;
+    float rainbowHue;
     byte* heat;
 
 

@@ -13,7 +13,7 @@
 FastLedStrip fstrip(NUM_LEDS);
 
 #define IR_INPUT_PIN    2
-#include "TinyIRReceiver.cpp.h"
+#include "TinyIRReceiver.hpp"
 
 bool isDrawing = true;
 
