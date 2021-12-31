@@ -1,6 +1,13 @@
 /*
     Based on IRRemote library example "Minimal receiver"
     Copyright (C) 2020-2021  Armin Joachimsmeyer
+
+    Arduino libraries needed : FastLED, IRremote
+
+    Modifications need to the IRremote library :
+    - src/TinyIRReveiber.hpp :
+      - line 98     void stopDrawing();     (next to the declaration of the handleReceivedIRData callback function)
+      - line 112    stopDrawing();          (at the begining of IRPinChangeInterruptHandler())
 */
 
 #define DEBUG
